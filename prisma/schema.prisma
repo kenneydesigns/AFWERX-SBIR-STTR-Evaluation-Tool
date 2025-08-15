@@ -1,0 +1,91 @@
+datasource db { provider = "postgresql"; url = env("DATABASE_URL") }
+generator client { provider = "prisma-client-js" }
+
+model Organization {
+  id        String   @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now())
+  users     UserOrg[]
+  projects  Project[]
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+  orgs      UserOrg[]
+}
+
+model UserOrg {
+  id     String @id @default(uuid())
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+  org    Organization @relation(fields: [orgId], references: [id])
+  orgId  String
+  role   String
+}
+
+model Project {
+  id           String   @id @default(uuid())
+  orgId        String
+  title        String
+  agency       String?
+  solicitation String?
+  status       String  @default("draft")
+  createdAt    DateTime @default(now())
+  org          Organization @relation(fields: [orgId], references: [id])
+  sections     Section[]
+  intakes      Intake[]
+}
+
+model Intake {
+  id        String   @id @default(uuid())
+  projectId String
+  answers   Json
+  complete  Int      @default(0)
+  project   Project  @relation(fields: [projectId], references: [id])
+}
+
+model Section {
+  id        String   @id @default(uuid())
+  projectId String
+  key       String
+  title     String
+  content   String?
+  tokens    Int     @default(0)
+  project   Project @relation(fields: [projectId], references: [id])
+  scores    Score[]
+  comments  Comment[]
+}
+
+model RubricCriterion {
+  id       String @id @default(uuid())
+  agency   String
+  key      String
+  weight   Float  @default(1)
+  guidance String?
+  scores   Score[]
+}
+
+model Score {
+  id          String @id @default(uuid())
+  sectionId   String
+  criterionId String
+  score       Float
+  rationale   String?
+  aiVersion   String?
+  createdAt   DateTime @default(now())
+  section     Section @relation(fields: [sectionId], references: [id])
+  criterion   RubricCriterion @relation(fields: [criterionId], references: [id])
+}
+
+model Comment {
+  id        String @id @default(uuid())
+  sectionId String
+  authorId  String
+  text      String
+  kind      String
+  createdAt DateTime @default(now())
+  section   Section @relation(fields: [sectionId], references: [id])
+}

@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root { --bg: #0b0c10; --fg: #eaf1f8; }
+body { background: var(--bg); color: var(--fg); }
+a { text-decoration: none; }
+.container { max-width: 960px; margin: 0 auto; padding: 24px; }
+.card { background: #111319; border: 1px solid #1f2430; border-radius: 12px; padding: 20px; }
+.btn { padding: 10px 14px; border-radius: 8px; border: 1px solid #2b3242; }
