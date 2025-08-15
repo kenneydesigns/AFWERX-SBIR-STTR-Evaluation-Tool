@@ -14,7 +14,6 @@
   "dependencies": {
   "@hookform/resolvers": "^3.3.4",
   "@prisma/client": "^5.18.0",
-  "@supabase/auth-helpers-nextjs": "0.10.0",
   "@supabase/supabase-js": "^2.45.4",
   "langchain": "^0.2.17",
   "next": "14.2.5",
@@ -23,6 +22,9 @@
   "react-dom": "18.3.1",
   "react-hook-form": "^7.53.0",
   "zod": "^3.23.8"
+},
+"overrides": {
+  "@supabase/auth-helpers-nextjs": "0.0.0-invalid-to-block"
 },
   "devDependencies": {
     "@types/node": "^20.12.13",
